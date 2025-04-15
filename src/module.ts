@@ -10,18 +10,20 @@ import {
   addServerHandler,
   addTemplate,
   addTypeTemplate,
-  addImportsSources,
   addServerImports,
 } from '@nuxt/kit'
 import type { BetterAuthOptions, ClientOptions } from 'better-auth'
 import { defu } from 'defu'
 import { resolve } from 'pathe'
 import { hash } from 'ohash'
+import { glob } from 'tinyglobby'
+import { pascalCase } from 'scule'
 import * as templates from './templates'
 
 export interface ModuleServerOptions extends Pick<BetterAuthOptions,
 'appName' | 'baseURL' | 'basePath' | 'secret'> {}
-export interface ModuleClientOptions extends ClientOptions {}
+export interface ModuleClientOptions extends Pick<ClientOptions,
+'baseURL' | 'basePath' | 'disableDefaultFetchPlugins'> {}
 
 // Module options TypeScript interface definition
 export interface ModuleOptions {
@@ -32,6 +34,11 @@ export interface ModuleOptions {
    * @default 'api/auth/**'
    */
   endpoint: string
+
+  /**
+   * @default ['*.better-auth']
+   */
+  serverConfigs?: string[]
 
   options: {
     /**
@@ -44,18 +51,6 @@ export interface ModuleOptions {
      */
     server: ModuleServerOptions
   }
-
-  composables: {
-    /**
-     * @default 'useAuth'
-     */
-    client: string
-    /**
-     * @default 'auth'
-     */
-    server: string
-  }
-
   /**
    * redirect options
    */
@@ -78,10 +73,7 @@ export default defineNuxtModule<ModuleOptions>({
   // Default configuration options of the Nuxt module
   defaults: {
     endpoint: '/api/auth/**',
-    composables: {
-      client: 'useAuth',
-      server: 'auth',
-    },
+    serverConfigs: [],
     redirectOptions: {
       redirectUserTo: '/profile',
       redirectGuestTo: '/signin',
@@ -99,10 +91,6 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.public.betterAuth = defu(nuxt.options.runtimeConfig.public.betterAuth, {
       baseUrl: options.baseUrl,
       endpoint: options.endpoint,
-      composables: {
-        client: options.composables.client,
-        server: options.composables.server,
-      },
       redirectOptions: options.redirectOptions,
     })
 
@@ -141,24 +129,34 @@ export default defineNuxtModule<ModuleOptions>({
       path: string
     }[] = [
       {
-        key: hash('better-auth-configs'),
+        key: pascalCase(hash('better-auth-configs')),
         path: resolver.resolve('./runtime/server'),
       },
     ]
     for (const layer of nuxt.options._layers) {
-      let path = resolve(layer.config.serverDir!, 'utils/better-auth.config.ts')
-      if (fs.existsSync(path)) {
-        serverConfigs.push({
-          key: hash(path),
-          path,
-        })
+      const paths = await glob([
+        '**/*.better-auth.ts', ...options.serverConfigs?.map((pattern) => {
+          return `**/${pattern}.ts`
+        }) || [],
+      ], { onlyFiles: true, ignore: nuxt.options.ignore, dot: true, cwd: layer.config.rootDir, absolute: true })
+
+      const pathsJS = await glob([
+        '**/*.better-auth.js',
+        ...options.serverConfigs?.map((pattern) => {
+          return `**/${pattern}.js`
+        }) || [],
+      ], { cwd: layer.config.serverDir })
+
+      if (paths.length === 0 && pathsJS.length === 0) {
+        continue
       }
-      else {
-        path = resolve(layer.config.serverDir!, 'utils/better-auth.config.js')
+
+      for (const path of [...paths, ...pathsJS]) {
+        console.log('path', path)
         if (fs.existsSync(path)) {
           serverConfigs.push({
-            key: hash(path),
-            path,
+            key: pascalCase(hash(path)),
+            path: path,
           })
         }
       }

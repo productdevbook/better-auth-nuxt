@@ -23,6 +23,12 @@ importers:
       pathe:
         specifier: ^2.0.3
         version: 2.0.3
+      scule:
+        specifier: ^1.3.0
+        version: 1.3.0
+      tinyglobby:
+        specifier: ^0.2.12
+        version: 0.2.12
     devDependencies:
       '@nuxt/devtools':
         specifier: ^2.4.0

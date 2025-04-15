@@ -1,10 +1,11 @@
 import type { BetterAuthOptions } from 'better-auth'
-import { openAPI } from 'better-auth/plugins'
+import { admin, openAPI } from 'better-auth/plugins'
 
 export default {
   disabledPaths: [],
   plugins: [
     openAPI(),
+    admin(),
   ],
   trustedOrigins: [],
 } satisfies BetterAuthOptions
