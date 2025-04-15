@@ -1,10 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import { defineNuxtModule, addPlugin, createResolver, logger, findPath, addImportsDir } from '@nuxt/kit'
+import fs from 'node:fs'
+import {
+  defineNuxtModule,
+  addPlugin,
+  createResolver,
+  logger,
+  addImportsDir,
+  addServerHandler,
+  addTemplate,
+  addTypeTemplate,
+} from '@nuxt/kit'
 import type { BetterAuthOptions, ClientOptions } from 'better-auth'
 import { defu } from 'defu'
 import { resolve } from 'pathe'
+import { hash } from 'ohash'
+import * as templates from './templates'
 
-export interface ModuleServerOptions extends BetterAuthOptions {}
+export interface ModuleServerOptions extends Pick<BetterAuthOptions,
+'appName' | 'baseURL' | 'basePath' | 'secret'> {}
 export interface ModuleClientOptions extends ClientOptions {}
 
 // Module options TypeScript interface definition
@@ -13,19 +27,32 @@ export interface ModuleOptions {
 
   /**
    * auth endpoint
-   * @default '/auth'
+   * @default 'api/auth/**'
    */
   endpoint: string
 
-  /**
-   * client options object or path to client setup script
-   */
-  client: ModuleClientOptions | string
+  options: {
+    /**
+     * client options object or path to client setup script
+     */
+    client: ModuleClientOptions
 
-  /**
-   * server options object or path to server setup script
-   */
-  server: ModuleServerOptions | string
+    /**
+     * server options object or path to server setup script
+     */
+    server: ModuleServerOptions
+  }
+
+  composables: {
+    /**
+     * @default 'useAuth'
+     */
+    client: string
+    /**
+     * @default 'auth'
+     */
+    server: string
+  }
 
   /**
    * redirect options
@@ -48,9 +75,11 @@ export default defineNuxtModule<ModuleOptions>({
   },
   // Default configuration options of the Nuxt module
   defaults: {
-    endpoint: '/auth',
-    client: 'better-auth-client.config',
-    server: 'better-auth-server.config',
+    endpoint: '/api/auth/**',
+    composables: {
+      client: 'useAuth',
+      server: 'auth',
+    },
     redirectOptions: {
       redirectUserTo: '/profile',
       redirectGuestTo: '/signin',
@@ -68,27 +97,101 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.public.betterAuth = defu(nuxt.options.runtimeConfig.public.betterAuth, {
       baseUrl: options.baseUrl,
       endpoint: options.endpoint,
-      client: options.client,
-      server: options.server,
+      composables: {
+        client: options.composables.client,
+        server: options.composables.server,
+      },
       redirectOptions: options.redirectOptions,
     })
 
     // alias runtime
     nuxt.options.alias['#better-auth'] = resolve('./runtime')
 
-    // Load server options
-    const defaultServerPath = resolver.resolve('./runtime/server')
-    const serverPath = typeof options.server === 'string' ? ((await findPath(options.server)) ?? defaultServerPath) : defaultServerPath
-
-    nuxt.options.alias['#better-auth-server'] = serverPath
-
-    // Load client options
-    const defaultClientPath = resolver.resolve('./runtime/client')
-    const clientPath = typeof options.client === 'string' ? ((await findPath(options.client)) ?? defaultClientPath) : defaultClientPath
-
-    nuxt.options.alias['#better-auth-client'] = clientPath
-
     addImportsDir(resolve('./runtime/composables'))
+
+    addServerHandler({
+      route: options.endpoint,
+      handler: resolver.resolve('./runtime/handler'),
+    })
+
+    const registerTemplate: typeof addTemplate = (options) => {
+      const name = (options as any).filename.replace(/\.m?js$/, '')
+      const alias = '#' + name
+      const results = addTemplate({
+        ...options as any,
+        write: true, // Write to disk for Nitro to consume
+      })
+
+      nuxt.options.nitro.alias ||= {}
+      nuxt.options.nitro.externals ||= {}
+      nuxt.options.nitro.externals.inline ||= []
+
+      console.log('Registering template', name, results.dst)
+      nuxt.options.alias[alias] = results.dst
+      nuxt.options.nitro.alias[alias] = nuxt.options.alias[alias]
+      nuxt.options.nitro.externals.inline.push(nuxt.options.alias[alias])
+      nuxt.options.nitro.externals.inline.push(alias)
+      return results as any
+    }
+
+    // mdc.config.ts support
+    const serverConfigs: {
+      key: string
+      path: string
+    }[] = [
+      {
+        key: hash('better-auth-configs'),
+        path: resolver.resolve('./runtime/server'),
+      },
+    ]
+    for (const layer of nuxt.options._layers) {
+      let path = resolve(layer.config.serverDir!, 'utils/better-auth.config.ts')
+      if (fs.existsSync(path)) {
+        serverConfigs.push({
+          key: hash(path),
+          path,
+        })
+      }
+      else {
+        path = resolve(layer.config.serverDir!, 'utils/better-auth.config.js')
+        if (fs.existsSync(path)) {
+          serverConfigs.push({
+            key: hash(path),
+            path,
+          })
+        }
+      }
+    }
+
+    registerTemplate({
+      filename: 'better-auth-configs.mjs',
+      getContents: templates.serverAuth,
+      options: { configs: serverConfigs },
+    })
+
+    addTypeTemplate({
+      filename: 'better-auth-configs.d.ts',
+      getContents: () => {
+        return [
+          'import { betterAuth } from "better-auth"',
+          'import mergeDeep from "@fastify/deepmerge"',
+          ...serverConfigs.map((config) => {
+            return `import ${config.key} from "${config.path}"`
+          }),
+
+          'const betterAuthConfigs = mergeDeep({all: true})({},',
+          ...serverConfigs.map((config) => {
+            return `${config.key},`
+          }),
+          ')',
+
+          'export type BetterAuth = ReturnType<typeof betterAuth<typeof betterAuthConfigs>>',
+
+          'export declare const useAuth: () => BetterAuth',
+          'export declare const auth: BetterAuth',
+        ].join('\n')
+      },
+    })
 
     addPlugin(resolver.resolve('./runtime/plugin'))
   },

@@ -5,8 +5,6 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-04-15',
 
   betterAuth: {
-    server: {
 
-    },
   },
 })
