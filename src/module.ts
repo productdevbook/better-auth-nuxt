@@ -111,7 +111,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     addServerHandler({
       route: options.endpoint,
-      handler: resolver.resolve('./runtime/handler'),
+      handler: resolver.resolve('./runtime/server/handler'),
     })
 
     const registerTemplate: typeof addTemplate = (options) => {
