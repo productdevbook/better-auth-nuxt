@@ -272,22 +272,22 @@ export default defineNuxtModule<ModuleOptions>({
     // AUTO IMPORTS
     addServerImports([
       {
-        from: '#better-auth/server',
+        from: './better-auth/server',
         name: 'useAuth',
       },
       {
-        from: '#better-auth/server',
+        from: './better-auth/server',
         name: 'auth',
       },
     ])
 
     addImports([
       {
-        from: '#better-auth/client',
+        from: './better-auth/client',
         name: 'useUserSession',
       },
       {
-        from: '#better-auth/client',
+        from: './better-auth/client',
         name: 'createAuthInstance',
       },
     ])
