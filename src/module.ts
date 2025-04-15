@@ -89,6 +89,13 @@ export default defineNuxtModule<ModuleOptions>({
   async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
+    nuxt.options.vite.optimizeDeps ??= {}
+    nuxt.options.vite.optimizeDeps.include ??= []
+    nuxt.options.vite.optimizeDeps.include.push(...[
+      'better-auth/client',
+      'better-auth/vue',
+    ])
+
     if (!options.endpoint) {
       logger.withTag('better-auth').error('Missing endpoint option')
     }
@@ -165,7 +172,7 @@ export default defineNuxtModule<ModuleOptions>({
       }
     }
 
-    registerTemplate({
+    const server = registerTemplate({
       filename: 'better-auth/server.mjs',
       getContents: templates.serverAuth,
       options: { configs: serverConfigs },
@@ -231,7 +238,7 @@ export default defineNuxtModule<ModuleOptions>({
       }
     }
 
-    registerTemplate({
+    const client = registerTemplate({
       filename: 'better-auth/client.mjs',
       getContents: templates.useUserSession,
       options: { configs: clientConfigs },
@@ -269,22 +276,22 @@ export default defineNuxtModule<ModuleOptions>({
     // AUTO IMPORTS
     addServerImports([
       {
-        from: './better-auth/server',
+        from: server.dst,
         name: 'useAuth',
       },
       {
-        from: './better-auth/server',
+        from: server.dst,
         name: 'auth',
       },
     ])
 
     addImports([
       {
-        from: './better-auth/client',
+        from: client.dst,
         name: 'useUserSession',
       },
       {
-        from: './better-auth/client',
+        from: client.dst,
         name: 'createAuthInstance',
       },
     ])
