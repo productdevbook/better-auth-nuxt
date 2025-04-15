@@ -10,6 +10,8 @@ import {
   addServerHandler,
   addTemplate,
   addTypeTemplate,
+  addImportsSources,
+  addServerImports,
 } from '@nuxt/kit'
 import type { BetterAuthOptions, ClientOptions } from 'better-auth'
 import { defu } from 'defu'
@@ -191,6 +193,17 @@ export default defineNuxtModule<ModuleOptions>({
         ].join('\n')
       },
     })
+
+    addServerImports([
+      {
+        from: '#better-auth-configs',
+        name: 'useAuth',
+      },
+      {
+        from: '#better-auth-configs',
+        name: 'auth',
+      },
+    ])
 
     addPlugin(resolver.resolve('./runtime/plugin'))
   },
