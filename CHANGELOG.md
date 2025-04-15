@@ -1,6 +1,32 @@
 # Changelog
 
 
+## v0.0.2
+
+[compare changes](https://github.com/productdevbook/better-auth-nuxt/compare/v0.0.1...v0.0.2)
+
+### 🚀 Enhancements
+
+- Enhance better-auth module with comprehensive options and runtime configuration ([8c04711](https://github.com/productdevbook/better-auth-nuxt/commit/8c04711))
+- Add new runtime configurations and templates for better-auth module ([338afff](https://github.com/productdevbook/better-auth-nuxt/commit/338afff))
+- Add initial configuration for better-auth module ([4c475a2](https://github.com/productdevbook/better-auth-nuxt/commit/4c475a2))
+- Add server auto imports ([a28340a](https://github.com/productdevbook/better-auth-nuxt/commit/a28340a))
+- Add new dependencies and update module options for better-auth integration ([6833102](https://github.com/productdevbook/better-auth-nuxt/commit/6833102))
+
+### 🩹 Fixes
+
+- Correct server handler path in addServerHandler function ([75bdcfd](https://github.com/productdevbook/better-auth-nuxt/commit/75bdcfd))
+
+### 🏡 Chore
+
+- Remove CI workflow configuration ([377ec16](https://github.com/productdevbook/better-auth-nuxt/commit/377ec16))
+- Playground add betterAuth ([86c1809](https://github.com/productdevbook/better-auth-nuxt/commit/86c1809))
+- Remove console log from serverAuth function for cleaner output ([a817388](https://github.com/productdevbook/better-auth-nuxt/commit/a817388))
+
+### ❤️ Contributors
+
+- Productdevbook <hi@productdevbook.com>
+
 ## v0.0.1
 
 
