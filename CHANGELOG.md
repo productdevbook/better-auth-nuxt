@@ -1,6 +1,29 @@
 # Changelog
 
 
+## v0.0.3
+
+[compare changes](https://github.com/productdevbook/better-auth-nuxt/compare/v0.0.2...v0.0.3)
+
+### 🚀 Enhancements
+
+- Implement client-side authentication and middleware support ([1fd4909](https://github.com/productdevbook/better-auth-nuxt/commit/1fd4909))
+- Auth client setup ([ac18f51](https://github.com/productdevbook/better-auth-nuxt/commit/ac18f51))
+
+### 🩹 Fixes
+
+- Update import paths for better-auth module to use correct server references ([f39282d](https://github.com/productdevbook/better-auth-nuxt/commit/f39282d))
+- Update import paths for server and client modules to use relative references ([134f32a](https://github.com/productdevbook/better-auth-nuxt/commit/134f32a))
+- Update import paths for server and client templates to use resolved destinations ([57d74fe](https://github.com/productdevbook/better-auth-nuxt/commit/57d74fe))
+
+### 💅 Refactors
+
+- Remove unused composables and clean up module imports ([f7e24f2](https://github.com/productdevbook/better-auth-nuxt/commit/f7e24f2))
+
+### ❤️ Contributors
+
+- Productdevbook <hi@productdevbook.com>
+
 ## v0.0.2
 
 [compare changes](https://github.com/productdevbook/better-auth-nuxt/compare/v0.0.1...v0.0.2)
