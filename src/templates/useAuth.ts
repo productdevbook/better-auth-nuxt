@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export async function serverAuth({ options }: any) {
-  console.log('Server Auth Initialized', options)
   return [
     'import mergeDeep from "@fastify/deepmerge"',
     'import { betterAuth } from "better-auth"',

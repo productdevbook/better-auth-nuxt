@@ -126,7 +126,6 @@ export default defineNuxtModule<ModuleOptions>({
       nuxt.options.nitro.externals ||= {}
       nuxt.options.nitro.externals.inline ||= []
 
-      console.log('Registering template', name, results.dst)
       nuxt.options.alias[alias] = results.dst
       nuxt.options.nitro.alias[alias] = nuxt.options.alias[alias]
       nuxt.options.nitro.externals.inline.push(nuxt.options.alias[alias])
