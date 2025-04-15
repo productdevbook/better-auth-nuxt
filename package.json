@@ -1,0 +1,54 @@
+{
+  "name": "better-auth-nuxt",
+  "version": "0.0.0",
+  "description": "Better Auth Nuxt Module",
+  "repository": "productdevbook/better-auth-nuxt",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.mts",
+      "import": "./dist/module.mjs"
+    }
+  },
+  "main": "./dist/module.mjs",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./dist/types.d.mts"
+      ]
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepack": "nuxt-module-build build",
+    "dev": "nuxi dev playground",
+    "dev:build": "nuxi build playground",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "@nuxt/kit": "^3.16.2"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "^2.4.0",
+    "@nuxt/eslint-config": "^1.3.0",
+    "@nuxt/module-builder": "^1.0.1",
+    "@nuxt/schema": "^3.16.2",
+    "@nuxt/test-utils": "^3.17.2",
+    "@types/node": "latest",
+    "changelogen": "^0.6.1",
+    "eslint": "^9.24.0",
+    "nuxt": "^3.16.2",
+    "typescript": "~5.8.3",
+    "vitest": "^3.1.1",
+    "vue-tsc": "^2.2.8"
+  },
+  "packageManager": "pnpm@10.8.1"
+}
