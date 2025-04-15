@@ -1,6 +1,6 @@
 import { defu } from 'defu'
 import { defineNuxtRouteMiddleware, navigateTo } from '#app'
-import { useAuth } from '#better-auth-configs'
+import { useUserSession } from '#imports'
 
 type MiddlewareOptions = false | {
   /**
@@ -41,7 +41,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (to.meta?.auth === false) {
     return
   }
-  const { loggedIn, options, fetchSession, session } = useAuth()
+  const { loggedIn, options, fetchSession, session } = useUserSession()
   const { only, redirectUserTo, redirectGuestTo, redirectUnauthorizedTo } = defu(to.meta?.auth, options)
 
   // If client-side, fetch session between each navigation

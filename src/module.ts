@@ -169,13 +169,13 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     registerTemplate({
-      filename: 'better-auth-configs.mjs',
+      filename: 'better-auth/server.mjs',
       getContents: templates.serverAuth,
       options: { configs: serverConfigs },
     })
 
     addTypeTemplate({
-      filename: 'better-auth-configs.d.ts',
+      filename: 'better-auth/server.d.ts',
       getContents: () => {
         return [
           'import { betterAuth } from "better-auth"',
@@ -272,11 +272,11 @@ export default defineNuxtModule<ModuleOptions>({
     // AUTO IMPORTS
     addServerImports([
       {
-        from: '#better-auth-configs',
+        from: '#better-auth/server',
         name: 'useAuth',
       },
       {
-        from: '#better-auth-configs',
+        from: '#better-auth/server',
         name: 'auth',
       },
     ])
