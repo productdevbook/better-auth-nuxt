@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export async function useUserSession({ options: _ }: any) {
+export async function useUserSession({ options }: any) {
   return [
-    'import { adminClient, usernameClient } from \'better-auth/client/plugins\'',
     'import { createAuthClient } from \'better-auth/vue\'',
+    ...options.configs.map((config: any) => {
+      return `import ${config.key} from "${config.path}"`
+    }),
     'import { defu } from \'defu\'',
     'import { computed, ref } from \'vue\'',
     'import { navigateTo, useRequestHeaders, useRequestURL, useRuntimeConfig, useState } from \'#app\'',
@@ -16,11 +18,20 @@ export async function useUserSession({ options: _ }: any) {
     '',
     '  const authClient = createAuthClient({',
     '    baseURL: url.origin,',
-    '    fetchOptions: { headers },',
-    '    plugins: [',
-    '      adminClient(),',
-    '      usernameClient(),',
-    '    ],',
+    '    fetchOptions: {',
+    ...options.configs.map((config: any) => {
+      return `    ...${config.key}?.fetchOptions || {},`
+    }),
+    '      headers,',
+    '    },',
+    ...options.configs.map((config: any) => {
+      return `    ${config.key},`
+    }),
+    '   plugins: [',
+    ...options.configs.map((config: any) => {
+      return `    ...${config.key}?.plugins || [],`
+    }),
+    ' ],',
     '  })',
     '',
     '  const options = defu(config.public.betterAuth.redirectOptions || {}, {',
