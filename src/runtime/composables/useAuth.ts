@@ -93,7 +93,7 @@ function setupSessionListener(client: ReturnType<typeof createAuthInstance>['cli
   })
 }
 
-export function useAuth() {
+export function useClientAuth() {
   if (_authInstance && import.meta.client)
     return _authInstance
 

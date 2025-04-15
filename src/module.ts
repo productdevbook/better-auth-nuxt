@@ -11,6 +11,8 @@ import {
   addTemplate,
   addTypeTemplate,
   addServerImports,
+  addRouteMiddleware,
+  addImports,
 } from '@nuxt/kit'
 import type { BetterAuthOptions, ClientOptions } from 'better-auth'
 import { defu } from 'defu'
@@ -39,6 +41,11 @@ export interface ModuleOptions {
    * @default ['*.better-auth']
    */
   serverConfigs?: string[]
+
+  /**
+   * @default ['*.better-auth-client']
+   */
+  clientConfigs?: string[]
 
   options: {
     /**
@@ -123,7 +130,6 @@ export default defineNuxtModule<ModuleOptions>({
       return results as any
     }
 
-    // mdc.config.ts support
     const serverConfigs: {
       key: string
       path: string
@@ -192,6 +198,78 @@ export default defineNuxtModule<ModuleOptions>({
       },
     })
 
+    // CLIENT
+
+    const clientConfigs: {
+      key: string
+      path: string
+    }[] = []
+
+    for (const layer of nuxt.options._layers) {
+      const paths = await glob([
+        '**/*.better-auth-client.ts', ...options.clientConfigs?.map((pattern) => {
+          return `**/${pattern}.ts`
+        }) || [],
+      ], { onlyFiles: true, ignore: nuxt.options.ignore, dot: true, cwd: layer.config.rootDir, absolute: true })
+
+      const pathsJS = await glob([
+        '**/*.better-auth.js',
+        ...options.serverConfigs?.map((pattern) => {
+          return `**/${pattern}.js`
+        }) || [],
+      ], { cwd: layer.config.serverDir })
+
+      if (paths.length === 0 && pathsJS.length === 0) {
+        continue
+      }
+
+      for (const path of [...paths, ...pathsJS]) {
+        console.log('path', path)
+        if (fs.existsSync(path)) {
+          clientConfigs.push({
+            key: pascalCase(hash(path)),
+            path: path,
+          })
+        }
+      }
+    }
+
+    registerTemplate({
+      filename: 'better-auth/client.mjs',
+      getContents: templates.useUserSession,
+      options: { configs: clientConfigs },
+    })
+
+    addTypeTemplate({
+      filename: 'better-auth/client.d.ts',
+      getContents: () => {
+        return [
+          'import { createAuthInstance } from "./client.mjs"',
+          'import type { ClientOptions, InferSessionFromClient, InferUserFromClient } from "better-auth"',
+          'import type { RouteLocationRaw } from "vue-router"',
+          'import { Ref, ComputedRef } from "vue"',
+          ...clientConfigs.map((config) => {
+            return `import ${config.key} from "${config.path}"`
+          }),
+
+          'export interface RuntimeAuthConfig {',
+          '  redirectUserTo: RouteLocationRaw | string',
+          '  redirectGuestTo: RouteLocationRaw | string',
+          '  redirectUnauthorizedTo: RouteLocationRaw | string',
+          '}',
+
+          'export interface AuthSignOutOptions {',
+          '  redirectTo?: RouteLocationRaw',
+          '}',
+
+          'export type AuthClient = ReturnType<typeof createAuthInstance>',
+
+          'export declare const useUserSession: () => AuthClient',
+        ].join('\n')
+      },
+    })
+
+    // AUTO IMPORTS
     addServerImports([
       {
         from: '#better-auth-configs',
@@ -202,6 +280,23 @@ export default defineNuxtModule<ModuleOptions>({
         name: 'auth',
       },
     ])
+
+    addImports([
+      {
+        from: '#better-auth/client',
+        name: 'useUserSession',
+      },
+      {
+        from: '#better-auth/client',
+        name: 'createAuthInstance',
+      },
+    ])
+
+    addRouteMiddleware({
+      name: 'better-auth',
+      path: resolver.resolve('./runtime/middleware/auth.global'),
+      global: true,
+    })
 
     addPlugin(resolver.resolve('./runtime/plugin'))
   },
