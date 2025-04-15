@@ -6,7 +6,6 @@ import {
   addPlugin,
   createResolver,
   logger,
-  addImportsDir,
   addServerHandler,
   addTemplate,
   addTypeTemplate,
@@ -103,8 +102,6 @@ export default defineNuxtModule<ModuleOptions>({
 
     // alias runtime
     nuxt.options.alias['#better-auth'] = resolve('./runtime')
-
-    addImportsDir(resolve('./runtime/composables'))
 
     addServerHandler({
       route: options.endpoint,
