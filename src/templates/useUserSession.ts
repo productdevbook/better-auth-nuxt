@@ -1,4 +1,11 @@
-export async function useUserSession({ options }: any) {
+import type { ModuleOptions } from '../module'
+
+export async function useUserSession({ options }: {
+  options: {
+    moduleOptions: ModuleOptions
+    configs: any
+  }
+}) {
   return [
     'import { createAuthClient } from \'better-auth/vue\'',
     ...options.configs.map((config: any) => {
@@ -17,6 +24,11 @@ export async function useUserSession({ options }: any) {
     '',
     '  const authClient = createAuthClient({',
     '    baseURL: url.origin,',
+    ...options.moduleOptions.options.client
+      ? Object.entries(options.moduleOptions.options.client).map(([key, value]) => {
+          return `    ${key}: ${JSON.stringify(value)},`
+        })
+      : [],
     '    fetchOptions: {',
     ...options.configs.map((config: any) => {
       return `    ...${config.key}?.fetchOptions || {},`

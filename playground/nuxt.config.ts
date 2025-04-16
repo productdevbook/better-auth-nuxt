@@ -19,5 +19,13 @@ export default defineNuxtConfig({
       redirectGuestTo: '/auth/login',
       redirectUserTo: '/',
     },
+    options: {
+      client: {
+        basePath: '/api/auth',
+      },
+      server: {
+        appName: 'Nuxt Better Auth',
+      },
+    },
   },
 })

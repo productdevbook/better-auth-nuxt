@@ -27,8 +27,6 @@ export interface ModuleClientOptions extends Pick<ClientOptions,
 
 // Module options TypeScript interface definition
 export interface ModuleOptions {
-  baseUrl: string
-
   /**
    * auth endpoint
    * @default 'api/auth/**'
@@ -49,12 +47,12 @@ export interface ModuleOptions {
     /**
      * client options object or path to client setup script
      */
-    client: ModuleClientOptions
+    client?: ModuleClientOptions
 
     /**
      * server options object or path to server setup script
      */
-    server: ModuleServerOptions
+    server?: ModuleServerOptions
   }
   /**
    * redirect options
@@ -101,7 +99,6 @@ export default defineNuxtModule<ModuleOptions>({
 
     // expose public options
     nuxt.options.runtimeConfig.public.betterAuth = defu(nuxt.options.runtimeConfig.public.betterAuth, {
-      baseUrl: options.baseUrl,
       endpoint: options.endpoint,
       redirectOptions: options.redirectOptions,
     })
@@ -173,7 +170,7 @@ export default defineNuxtModule<ModuleOptions>({
     const server = registerTemplate({
       filename: 'better-auth/server.mjs',
       getContents: templates.serverAuth,
-      options: { configs: serverConfigs },
+      options: { configs: serverConfigs, moduleOptions: options },
     })
 
     addTypeTemplate({
@@ -238,7 +235,7 @@ export default defineNuxtModule<ModuleOptions>({
     const client = registerTemplate({
       filename: 'better-auth/client.mjs',
       getContents: templates.useUserSession,
-      options: { configs: clientConfigs },
+      options: { configs: clientConfigs, moduleOptions: options },
     })
 
     addTypeTemplate({
