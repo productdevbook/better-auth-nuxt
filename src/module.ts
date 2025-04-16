@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import fs from 'node:fs'
 import {
@@ -297,8 +296,8 @@ export default defineNuxtModule<ModuleOptions>({
     ])
 
     addRouteMiddleware({
-      name: 'better-auth',
-      path: resolver.resolve('./runtime/middleware/auth.global'),
+      name: 'auth',
+      path: resolver.resolve('./runtime/middleware/auth.ts'),
       global: true,
     })
 

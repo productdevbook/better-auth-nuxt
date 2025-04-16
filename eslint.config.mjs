@@ -17,9 +17,10 @@ export default createConfigForNuxt({
 })
   .append(
     {
-      files: ['**/*.vue'],
+      files: ['**/*.vue', '**/*.ts'],
       rules: {
         'vue/multi-word-component-names': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
       },
     },
     // your custom flat config here...

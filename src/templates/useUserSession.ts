@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export async function useUserSession({ options }: any) {
   return [
     'import { createAuthClient } from \'better-auth/vue\'',

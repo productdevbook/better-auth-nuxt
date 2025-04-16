@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export async function serverAuth({ options }: any) {
   return [
     'import mergeDeep from "@fastify/deepmerge"',

@@ -7,13 +7,11 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (to.meta?.auth === false) {
     return
   }
-  const { loggedIn, options, fetchSession, session } = useUserSession()
-  const { only, redirectUserTo, redirectGuestTo, redirectUnauthorizedTo } = defu(to.meta?.auth, options)
 
-  // If client-side, fetch session between each navigation
-  if (import.meta.client) {
-    await fetchSession()
-  }
+  const { loggedIn, options, fetchSession, session } = useUserSession()
+  const { only, redirectUserTo, redirectGuestTo, redirectUnauthorizedTo } = defu(to.meta.auth, options)
+
+  await fetchSession()
 
   // If guest mode, redirect if authenticated
   if (only === 'guest' && loggedIn.value) {
@@ -24,17 +22,23 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return navigateTo(redirectUserTo)
   }
 
+  // Handle user-only routes when user is not logged in
   if (only && only !== 'guest' && !loggedIn.value) {
     if (to.path === redirectGuestTo)
       return // Avoid infinite redirect
     return navigateTo(redirectGuestTo)
   }
 
-  if (only && only !== 'guest' && session.value) {
-    if (to.path === redirectUnauthorizedTo)
-      return // Avoid infinite redirect
-    return navigateTo(redirectUnauthorizedTo ?? '/401')
-  }
+  // Handle role-based authorization
+  if (only && only !== 'guest' && loggedIn.value && session.value) {
+    const userRole = (session.value as any).role || 'user'
+    const requiredRoles = Array.isArray(only) ? only : [only]
 
-  console.log('only', only, 'loggedIn', loggedIn.value, 'session', session.value)
+    // Check if user has the required role
+    if (!requiredRoles.includes(userRole) && !requiredRoles.includes('user')) {
+      if (to.path === redirectUnauthorizedTo)
+        return // Avoid infinite redirect
+      return navigateTo(redirectUnauthorizedTo ?? '/401')
+    }
+  }
 })
