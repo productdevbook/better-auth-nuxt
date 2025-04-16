@@ -1,6 +1,26 @@
 # Changelog
 
 
+## v0.0.5
+
+[compare changes](https://github.com/productdevbook/better-auth-nuxt/compare/v0.0.4...v0.0.5)
+
+### 🚀 Enhancements
+
+- **auth:** Enhance module options structure and improve type definitions for server and client configurations ([4801dcf](https://github.com/productdevbook/better-auth-nuxt/commit/4801dcf))
+
+### 🩹 Fixes
+
+- Add optional chaining for moduleOptions in serverAuth and useUserSession functions ([c95e1fe](https://github.com/productdevbook/better-auth-nuxt/commit/c95e1fe))
+
+### 🏡 Chore
+
+- Remove debug console.log statements from module setup ([18ba0a5](https://github.com/productdevbook/better-auth-nuxt/commit/18ba0a5))
+
+### ❤️ Contributors
+
+- Productdevbook <hi@productdevbook.com>
+
 ## v0.0.4
 
 [compare changes](https://github.com/productdevbook/better-auth-nuxt/compare/v0.0.3...v0.0.4)
