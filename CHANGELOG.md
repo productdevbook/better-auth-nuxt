@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.0.4
+
+[compare changes](https://github.com/productdevbook/better-auth-nuxt/compare/v0.0.3...v0.0.4)
+
+### 🚀 Enhancements
+
+- **auth:** Update redirect options and enhance middleware functionality ([843a3c0](https://github.com/productdevbook/better-auth-nuxt/commit/843a3c0))
+- **auth:** Implement new authentication middleware and update related configurations ([ea1215a](https://github.com/productdevbook/better-auth-nuxt/commit/ea1215a))
+
+### 🏡 Chore
+
+- Code structure for improved readability and maintainability ([ad4daa1](https://github.com/productdevbook/better-auth-nuxt/commit/ad4daa1))
+
+### ❤️ Contributors
+
+- Productdevbook <hi@productdevbook.com>
+
 ## v0.0.3
 
 [compare changes](https://github.com/productdevbook/better-auth-nuxt/compare/v0.0.2...v0.0.3)
