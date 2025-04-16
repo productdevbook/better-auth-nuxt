@@ -161,7 +161,6 @@ export default defineNuxtModule<ModuleOptions>({
       }
 
       for (const path of [...paths, ...pathsJS]) {
-        console.log('path', path)
         if (fs.existsSync(path)) {
           serverConfigs.push({
             key: pascalCase(hash(path)),
@@ -227,7 +226,6 @@ export default defineNuxtModule<ModuleOptions>({
       }
 
       for (const path of [...paths, ...pathsJS]) {
-        console.log('path', path)
         if (fs.existsSync(path)) {
           clientConfigs.push({
             key: pascalCase(hash(path)),
