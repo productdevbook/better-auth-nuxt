@@ -24,7 +24,7 @@ export async function useUserSession({ options }: {
     '',
     '  const authClient = createAuthClient({',
     '    baseURL: url.origin,',
-    ...options.moduleOptions.options.client
+    ...options.moduleOptions?.options?.client
       ? Object.entries(options.moduleOptions.options.client).map(([key, value]) => {
           return `    ${key}: ${JSON.stringify(value)},`
         })

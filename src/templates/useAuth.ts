@@ -14,7 +14,7 @@ export async function serverAuth({ options }: {
     }),
     'const betterAuthConfigs = mergeDeep({all: true})({},',
     '{',
-    ...options.moduleOptions.options.server
+    ...options.moduleOptions?.options?.server
       ? Object.entries(options.moduleOptions.options.server).map(([key, value]) => {
           return `    ${key}: ${JSON.stringify(value)},`
         })
