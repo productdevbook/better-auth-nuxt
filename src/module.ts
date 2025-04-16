@@ -61,9 +61,9 @@ export interface ModuleOptions {
    * redirect options
    */
   redirectOptions: {
-    redirectUserTo: string
-    redirectGuestTo: string
-    redirectUnauthorizedTo: string
+    redirectUserTo?: string
+    redirectGuestTo?: string
+    redirectUnauthorizedTo?: string
   }
 }
 
@@ -81,8 +81,8 @@ export default defineNuxtModule<ModuleOptions>({
     endpoint: '/api/auth/**',
     serverConfigs: [],
     redirectOptions: {
-      redirectUserTo: '/profile',
-      redirectGuestTo: '/signin',
+      redirectUserTo: '/auth/login',
+      redirectGuestTo: '/',
       redirectUnauthorizedTo: '/401',
     },
   },
@@ -300,6 +300,45 @@ export default defineNuxtModule<ModuleOptions>({
       name: 'better-auth',
       path: resolver.resolve('./runtime/middleware/auth.global'),
       global: true,
+    })
+
+    addTypeTemplate({
+      filename: 'types/better-auth-middleware.d.ts',
+      getContents: () => {
+        return [
+          ' type MiddlewareOptions = false | {',
+          '   /**',
+          '    * Only apply auth middleware to guest or user',
+          '    */',
+          '   only?:',
+          '     | "guest"',
+          '     | "user"',
+          '     | "member"',
+          '     | "admin"',
+          '   /**',
+          '    * Redirect authenticated user to this route',
+          '    */',
+          '   redirectUserTo?: string',
+          '   /**',
+          '    * Redirect guest to this route',
+          '    */',
+          '   redirectGuestTo?: string',
+          '   redirectUnauthorizedTo?: string',
+          ' }',
+          ' declare module "#app" {',
+          '   interface PageMeta {',
+          '     auth?: MiddlewareOptions',
+          '   }',
+          ' }',
+          ' declare module "vue-router" {',
+          '   interface RouteMeta {',
+          '     auth?: MiddlewareOptions',
+          '   }',
+          ' }',
+          'export {}',
+        ].join('\n')
+      },
+      write: true,
     })
 
     addPlugin(resolver.resolve('./runtime/plugin'))

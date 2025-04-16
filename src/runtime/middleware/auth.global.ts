@@ -2,40 +2,6 @@ import { defu } from 'defu'
 import { defineNuxtRouteMiddleware, navigateTo } from '#app'
 import { useUserSession } from '#imports'
 
-type MiddlewareOptions = false | {
-  /**
-   * Only apply auth middleware to guest or user
-   */
-  only?:
-    | 'guest'
-    | 'user'
-    | 'member'
-    | 'admin'
-  /**
-   * Redirect authenticated user to this route
-   */
-  redirectUserTo?: string
-  /**
-   * Redirect guest to this route
-   */
-  redirectGuestTo?: string
-
-  redirectUnauthorizedTo?: string
-
-}
-
-declare module '#app' {
-  interface PageMeta {
-    auth?: MiddlewareOptions
-  }
-}
-
-declare module 'vue-router' {
-  interface RouteMeta {
-    auth?: MiddlewareOptions
-  }
-}
-
 export default defineNuxtRouteMiddleware(async (to) => {
   // If auth is disabled, skip middleware
   if (to.meta?.auth === false) {
@@ -47,15 +13,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
   // If client-side, fetch session between each navigation
   if (import.meta.client) {
     await fetchSession()
-  }
-
-  // Redirect logged-in users away from auth pages
-  if (loggedIn.value && to.path.startsWith('/auth/')) {
-    // Avoid infinite redirect
-    if (to.path === redirectUserTo) {
-      return
-    }
-    return navigateTo(redirectUserTo)
   }
 
   // If guest mode, redirect if authenticated
@@ -73,10 +30,11 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return navigateTo(redirectGuestTo)
   }
 
-  //  && !hasPerm(session.value.user.permissions, only)
   if (only && only !== 'guest' && session.value) {
     if (to.path === redirectUnauthorizedTo)
       return // Avoid infinite redirect
     return navigateTo(redirectUnauthorizedTo ?? '/401')
   }
+
+  console.log('only', only, 'loggedIn', loggedIn.value, 'session', session.value)
 })
