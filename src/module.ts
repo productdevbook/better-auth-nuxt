@@ -292,7 +292,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     addRouteMiddleware({
       name: 'auth',
-      path: resolver.resolve('./runtime/middleware/auth.ts'),
+      path: resolver.resolve('./runtime/middleware/auth'),
       global: true,
     })
 
