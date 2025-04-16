@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.6
+
+[compare changes](https://github.com/productdevbook/better-auth-nuxt/compare/v0.0.5...v0.0.6)
+
+### 🩹 Fixes
+
+- Update path for auth route middleware to remove file extension ([c5400fe](https://github.com/productdevbook/better-auth-nuxt/commit/c5400fe))
+
+### ❤️ Contributors
+
+- Productdevbook <hi@productdevbook.com>
+
 ## v0.0.5
 
 [compare changes](https://github.com/productdevbook/better-auth-nuxt/compare/v0.0.4...v0.0.5)
