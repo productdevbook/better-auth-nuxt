@@ -5,7 +5,7 @@
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-A Nuxt module for simple, flexible authentication in your Nuxt 3 applications.
+A Nuxt module for simple, flexible authentication in your Nuxt applications.
 
 - [✨ &nbsp;Release Notes](/CHANGELOG.md)
 <!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/my-module?file=playground%2Fapp.vue) -->
@@ -13,12 +13,12 @@ A Nuxt module for simple, flexible authentication in your Nuxt 3 applications.
 
 ## Features
 
-- 🔒 &nbsp;Simple authentication for Nuxt 3 applications
+- ⚙️ &nbsp;Auto-scanning of client and server configs for end-to-end TS support
 - 🚀 &nbsp;Built-in authentication middleware
-- 🔑 &nbsp;Multiple authentication strategies (username, email)
+- 🔑 &nbsp;Multiple authentication strategies (username, email, ...)
 - 🛡️ &nbsp;Role-based access control
 - 🔄 &nbsp;Session management
-- 📱 &nbsp;Redirect handling for authenticated/unauthenticated users
+- 🔒 &nbsp;Redirect handling for authenticated/unauthenticated users
 
 ## Quick Setup
 
