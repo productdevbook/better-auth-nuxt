@@ -233,26 +233,26 @@ export default {
 
   ```bash
   # Install dependencies
-  npm install
+  pnpm install
 
   # Generate type stubs
-  npm run dev:prepare
+  pnpm run dev:prepare
 
   # Develop with the playground
-  npm run dev
+  pnpm run dev
 
   # Build the playground
-  npm run dev:build
+  pnpm run dev:build
 
   # Run ESLint
-  npm run lint
+  pnpm run lint
 
   # Run Vitest
-  npm run test
-  npm run test:watch
+  pnpm run test
+  pnpm run test:watch
 
   # Release new version
-  npm run release
+  pnpm run release
   ```
 
 </details>
