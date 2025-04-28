@@ -209,7 +209,7 @@ You can create configuration files to customize authentication:
 Create a `*.better-auth.ts` file to configure server-side auth:
 
 ```ts
-// app/my-auth.better-auth.ts
+// server/my-auth.better-auth.ts
 export default {
   // Custom server-side auth configuration
 }
