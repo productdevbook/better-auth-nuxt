@@ -26,13 +26,13 @@ A Nuxt module for simple, flexible authentication in your Nuxt applications.
 
 ```bash
 # Using npm
-npm install better-auth-nuxt
+npm install better-auth-nuxt better-auth
 
 # Using yarn
-yarn add better-auth-nuxt
+yarn add better-auth-nuxt better-auth
 
 # Using pnpm
-pnpm add better-auth-nuxt
+pnpm add better-auth-nuxt better-auth
 ```
 
 2. Add the module to your `nuxt.config.ts`:
