@@ -230,6 +230,8 @@ export default {
 } satisfies ClientOptions
 ```
 
+> **Note**: After adding or modifying configuration files, run `pnpm nuxt prepare` to ensure your changes are properly recognized by Nuxt.
+
 ## Contribution
 
 <details>
