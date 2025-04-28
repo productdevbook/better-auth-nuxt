@@ -1,6 +1,25 @@
 # Changelog
 
 
+## v0.0.7
+
+[compare changes](https://github.com/productdevbook/better-auth-nuxt/compare/v0.0.6...v0.0.7)
+
+### 🩹 Fixes
+
+- Middleware types ([#5](https://github.com/productdevbook/better-auth-nuxt/pull/5))
+
+### 🏡 Chore
+
+- Update readme ([#4](https://github.com/productdevbook/better-auth-nuxt/pull/4))
+- Update installation and script commands to use pnpm ([c7ebde9](https://github.com/productdevbook/better-auth-nuxt/commit/c7ebde9))
+
+### ❤️ Contributors
+
+- Wind <hi@productdevbook.com>
+- Productdevbook <hi@productdevbook.com>
+- Miguelrk <miguelromerokaram@gmail.com>
+
 ## v0.0.6
 
 [compare changes](https://github.com/productdevbook/better-auth-nuxt/compare/v0.0.5...v0.0.6)
