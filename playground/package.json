@@ -8,11 +8,11 @@
     "generate": "nuxi generate"
   },
   "dependencies": {
-    "better-auth": "^1.2.7",
-    "nuxt": "^3.16.2"
+    "better-auth": "catalog:",
+    "nuxt": "catalog:"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.1.4",
-    "tailwindcss": "^4.1.4"
+    "@tailwindcss/vite": "catalog:",
+    "tailwindcss": "catalog:"
   }
 }

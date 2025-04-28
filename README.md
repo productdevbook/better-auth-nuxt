@@ -236,23 +236,23 @@ export default {
   pnpm install
 
   # Generate type stubs
-  pnpm run dev:prepare
+  pnpm dev:prepare
 
   # Develop with the playground
-  pnpm run dev
+  pnpm dev
 
   # Build the playground
-  pnpm run dev:build
+  pnpm dev:build
 
   # Run ESLint
-  pnpm run lint
+  pnpm lint
 
   # Run Vitest
-  pnpm run test
-  pnpm run test:watch
+  pnpm test
+  pnpm test:watch
 
   # Release new version
-  pnpm run release
+  pnpm release
   ```
 
 </details>
