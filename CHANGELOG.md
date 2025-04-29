@@ -1,6 +1,26 @@
 # Changelog
 
 
+## v0.0.8
+
+[compare changes](https://github.com/productdevbook/better-auth-nuxt/compare/v0.0.7...v0.0.8)
+
+### 🩹 Fixes
+
+- Update server configuration file path in README ([cbb8cd3](https://github.com/productdevbook/better-auth-nuxt/commit/cbb8cd3))
+- Update installation instructions to include 'better-auth' package ([0b1ffd0](https://github.com/productdevbook/better-auth-nuxt/commit/0b1ffd0))
+- Update server-side and client-side auth configuration to use type satisfaction ([a91a7a3](https://github.com/productdevbook/better-auth-nuxt/commit/a91a7a3))
+- Update release script to use pnpm for publishing ([#7](https://github.com/productdevbook/better-auth-nuxt/pull/7))
+
+### 📖 Documentation
+
+- Add note to run 'pnpm nuxt prepare' after modifying configuration files ([b738b5b](https://github.com/productdevbook/better-auth-nuxt/commit/b738b5b))
+
+### ❤️ Contributors
+
+- Wind <hi@productdevbook.com>
+- Productdevbook <hi@productdevbook.com>
+
 ## v0.0.7
 
 [compare changes](https://github.com/productdevbook/better-auth-nuxt/compare/v0.0.6...v0.0.7)
