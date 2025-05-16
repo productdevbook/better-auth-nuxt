@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.9
+
+[compare changes](https://github.com/productdevbook/better-auth-nuxt/compare/v0.0.8...v0.0.9)
+
+### 💅 Refactors
+
+- Server export default ([#9](https://github.com/productdevbook/better-auth-nuxt/pull/9))
+
+### ❤️ Contributors
+
+- Wind <hi@productdevbook.com>
+
 ## v0.0.8
 
 [compare changes](https://github.com/productdevbook/better-auth-nuxt/compare/v0.0.7...v0.0.8)
