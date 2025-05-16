@@ -12,6 +12,11 @@ export async function serverAuth({ options }: {
     ...options.configs.map((config: any) => {
       return `import ${config.key} from "${config.path}"`
     }),
+    '',
+    'let _auth',
+    '',
+    'export function useAuth() {',
+    '  if (!_auth) {',
     'const betterAuthConfigs = mergeDeep({all: true})({},',
     '{',
     ...options.moduleOptions?.options?.server
@@ -21,14 +26,10 @@ export async function serverAuth({ options }: {
       : [],
     '},',
     ...options.configs.map((config: any) => {
-      return `${config.key},`
+      return `${config.key}(),`
     }),
     ')',
     '',
-    'let _auth',
-    '',
-    'export function useAuth() {',
-    '  if (!_auth) {',
     '    _auth = betterAuth(betterAuthConfigs)',
     '  }',
     '  return _auth',

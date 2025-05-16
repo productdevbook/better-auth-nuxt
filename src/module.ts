@@ -185,7 +185,7 @@ export default defineNuxtModule<ModuleOptions>({
 
           'const betterAuthConfigs = mergeDeep({all: true})({},',
           ...serverConfigs.map((config) => {
-            return `${config.key},`
+            return `${config.key}(),`
           }),
           ')',
 
