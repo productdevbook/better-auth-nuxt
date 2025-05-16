@@ -212,9 +212,9 @@ Create a `*.better-auth.ts` file to configure server-side auth:
 // server/my-auth.better-auth.ts
 import type { BetterAuthOptions } from 'better-auth'
 
-export default {
+export default () => ({
   // Custom server-side auth configuration
-} satisfies BetterAuthOptions
+} satisfies BetterAuthOptions)
 ```
 
 ### Client Configuration

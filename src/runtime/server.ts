@@ -1,7 +1,7 @@
 import type { BetterAuthOptions } from 'better-auth'
 
-export default {
+export default () => ({
   disabledPaths: [],
   plugins: [],
   trustedOrigins: [],
-} satisfies BetterAuthOptions
+} satisfies BetterAuthOptions)
